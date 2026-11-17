@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% include 'components/meta_head.html' %}
+</head>
+
+<body class="bg-slate-50 text-slate-800 min-h-screen antialiased selection:bg-rose-500 selection:text-white">
+
+  <!-- Desktop Sidebar Navigation -->
+  {% include 'components/sidebar.html' %}
+
+  <!-- Main Viewport Content Wrapper (Offset for Desktop Sidebar) -->
+  <div class="md:pl-64 flex flex-col min-h-screen w-full transition-all duration-150">
+    <!-- Top Header Bar -->
+    {% include 'components/header.html' %}
+
+    <!-- Main View Container -->
+    <main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 pb-20 md:pb-8">
+      {% include 'views/dashboard.html' %}
+      {% include 'views/crawler.html' %}
+      {% include 'views/gallery.html' %}
+      {% include 'views/annotator.html' %}
+      {% include 'views/review.html' %}
+      {% include 'views/concept_studio.html' %}
+    </main>
+  </div>
+
+  <!-- Mobile Bottom Navigation -->
+  {% include 'components/mobile_bottom_nav.html' %}
+
+  <!-- Modals & Toasts -->
+  {% include 'components/modal_zoom.html' %}
+  {% include 'components/modal_qr.html' %}
+  {% include 'components/toast.html' %}
+
+  <!-- Modular Client-Side JavaScript Bundles -->
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/components/crawler.js"></script>
+  <script src="/static/js/components/gallery.js"></script>
+  <script src="/static/js/components/annotator.js"></script>
+  <script src="/static/js/components/review.js"></script>
+  <script src="/static/js/components/concept_studio.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+
+</html>

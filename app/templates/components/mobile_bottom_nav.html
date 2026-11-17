@@ -1,0 +1,28 @@
+<!-- DashCode Mobile Bottom Navigation Bar -->
+<div class="mobile-bottom-nav md:hidden">
+  <button onclick="App.switchTab('dashboard')" id="mob-nav-dashboard" class="mobile-nav-btn active">
+    <i data-lucide="layout-dashboard" class="w-5 h-5 mb-0.5"></i>
+    <span>Home</span>
+  </button>
+  <button onclick="App.switchTab('crawler')" id="mob-nav-crawler" class="mobile-nav-btn">
+    <i data-lucide="globe" class="w-5 h-5 mb-0.5"></i>
+    <span>Crawler</span>
+  </button>
+  <button onclick="App.switchTab('gallery')" id="mob-nav-gallery" class="mobile-nav-btn">
+    <i data-lucide="grid" class="w-5 h-5 mb-0.5"></i>
+    <span>Gallery</span>
+  </button>
+  <button onclick="App.switchTab('annotate')" id="mob-nav-annotate" class="mobile-nav-btn">
+    <i data-lucide="pen-tool" class="w-5 h-5 mb-0.5"></i>
+    <span>Annotate</span>
+  </button>
+  <button onclick="App.switchTab('review')" id="mob-nav-review" class="mobile-nav-btn relative">
+    <i data-lucide="shield-alert" class="w-5 h-5 mb-0.5"></i>
+    <span>AI Queue</span>
+    <span id="mob-badge-review" class="hidden absolute top-1 right-2 px-1 text-[9px] font-bold rounded-full bg-amber-500 text-white">0</span>
+  </button>
+  <button onclick="App.switchTab('concept_studio')" id="mob-nav-concept_studio" class="mobile-nav-btn">
+    <i data-lucide="sparkles" class="w-5 h-5 mb-0.5 text-indigo-600"></i>
+    <span>Studio</span>
+  </button>
+</div>

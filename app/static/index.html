@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Open Nepali Image — Multimodal Acquisition & Annotation Platform</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Custom DashCode-inspired Stylesheet -->
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased selection:bg-rose-500 selection:text-white">
+
+  <!-- ===================================================================== -->
+  <!-- TOP HEADER & RESPONSIVE NAVIGATION -->
+  <!-- ===================================================================== -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand Logo & Title -->
+      <div class="flex items-center space-x-2.5 sm:space-x-3 cursor-pointer" onclick="App.switchTab('dashboard')">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-rose-600 via-red-500 to-amber-500 flex items-center justify-center text-white font-extrabold shadow-md shadow-red-200 text-base sm:text-lg select-none">
+          ने
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5 sm:gap-2">
+            <h1 class="text-sm sm:text-base font-bold text-slate-900 leading-tight">Open Nepali Image</h1>
+            <span class="px-1.5 sm:px-2 py-0.5 text-[9px] sm:text-[10px] font-bold rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+              50k+ Target
+            </span>
+          </div>
+          <p class="text-[10px] sm:text-[11px] text-slate-500 hidden sm:block">Multimodal .np Ingestion • Devanagari OCR • CLIP/VLM • Gated MCP</p>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs (Desktop / Tablet) -->
+      <nav class="hidden md:flex items-center space-x-1 bg-slate-100 p-1 rounded-xl">
+        <button onclick="App.switchTab('dashboard')" id="tab-btn-dashboard" class="nav-tab px-3 py-1.5 text-xs font-semibold rounded-lg flex items-center gap-1.5 bg-white text-slate-900 shadow-xs">
+          <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i> Dashboard
+        </button>
+        <button onclick="App.switchTab('crawler')" id="tab-btn-crawler" class="nav-tab px-3 py-1.5 text-xs font-semibold rounded-lg flex items-center gap-1.5 text-slate-600 hover:text-slate-900">
+          <i data-lucide="globe" class="w-3.5 h-3.5"></i> .np Crawler
+        </button>
+        <button onclick="App.switchTab('gallery')" id="tab-btn-gallery" class="nav-tab px-3 py-1.5 text-xs font-semibold rounded-lg flex items-center gap-1.5 text-slate-600 hover:text-slate-900">
+          <i data-lucide="grid" class="w-3.5 h-3.5"></i> Gallery & Filter
+        </button>
+        <button onclick="App.switchTab('annotate')" id="tab-btn-annotate" class="nav-tab px-3 py-1.5 text-xs font-semibold rounded-lg flex items-center gap-1.5 text-slate-600 hover:text-slate-900">
+          <i data-lucide="pen-tool" class="w-3.5 h-3.5"></i> Annotator
+        </button>
+        <button onclick="App.switchTab('review')" id="tab-btn-review" class="nav-tab px-3 py-1.5 text-xs font-semibold rounded-lg flex items-center gap-1.5 text-slate-600 hover:text-slate-900 relative">
+          <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i> AI Approval Queue
+          <span id="ai-pending-badge" class="hidden px-1.5 py-0.2 text-[10px] font-bold rounded-full bg-amber-500 text-white animate-pulse">0</span>
+        </button>
+        <button onclick="App.switchTab('search')" id="tab-btn-search" class="nav-tab px-3 py-1.5 text-xs font-semibold rounded-lg flex items-center gap-1.5 text-slate-600 hover:text-slate-900">
+          <i data-lucide="search" class="w-3.5 h-3.5"></i> iCrawler
+        </button>
+      </nav>
+
+      <!-- Router / Phone LAN Access & Live Status Indicators -->
+      <div class="flex items-center space-x-1.5 sm:space-x-2 text-xs">
+        <!-- Phone LAN Access Pill -->
+        <button onclick="App.toggleQrModal()" class="flex items-center gap-1.5 px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-lg font-semibold text-[11px] transition-all" title="Open on Mobile Phone in same Wi-Fi router">
+          <i data-lucide="smartphone" class="w-3.5 h-3.5 text-rose-600"></i>
+          <span class="hidden sm:inline">Phone: </span>
+          <span id="phone-access-url" class="font-mono-code">192.168.10.108:8000</span>
+          <i data-lucide="qr-code" class="w-3 h-3 text-rose-500"></i>
+        </button>
+
+        <!-- Disk Space -->
+        <div class="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-100 rounded-lg text-slate-600 text-[11px]">
+          <i data-lucide="hard-drive" class="w-3.5 h-3.5 text-slate-500"></i>
+          <span>Free: <strong id="free-disk-val">-- GB</strong></span>
+        </div>
+
+        <!-- Live Crawler Indicator -->
+        <div class="flex items-center gap-1.5 px-2 sm:px-2.5 py-1.5 bg-slate-100 rounded-lg text-slate-700 text-[11px]">
+          <span id="crawler-live-dot" class="w-2 h-2 rounded-full bg-slate-400"></span>
+          <span id="crawler-mini-status" class="font-medium hidden sm:inline">Idle</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================================================================== -->
+  <!-- MOBILE BOTTOM NAVIGATION (DashCode Mobile App Bar) -->
+  <!-- ===================================================================== -->
+  <div class="mobile-bottom-nav md:hidden">
+    <button onclick="App.switchTab('dashboard')" id="mob-nav-dashboard" class="mobile-nav-btn active">
+      <i data-lucide="layout-dashboard" class="w-5 h-5 mb-0.5"></i>
+      <span>Home</span>
+    </button>
+    <button onclick="App.switchTab('crawler')" id="mob-nav-crawler" class="mobile-nav-btn">
+      <i data-lucide="globe" class="w-5 h-5 mb-0.5"></i>
+      <span>Crawler</span>
+    </button>
+    <button onclick="App.switchTab('gallery')" id="mob-nav-gallery" class="mobile-nav-btn">
+      <i data-lucide="grid" class="w-5 h-5 mb-0.5"></i>
+      <span>Gallery</span>
+    </button>
+    <button onclick="App.switchTab('annotate')" id="mob-nav-annotate" class="mobile-nav-btn">
+      <i data-lucide="pen-tool" class="w-5 h-5 mb-0.5"></i>
+      <span>Annotate</span>
+    </button>
+    <button onclick="App.switchTab('review')" id="mob-nav-review" class="mobile-nav-btn relative">
+      <i data-lucide="shield-alert" class="w-5 h-5 mb-0.5"></i>
+      <span>AI Queue</span>
+      <span id="mob-badge-review" class="hidden absolute top-1 right-2 px-1 text-[9px] font-bold rounded-full bg-amber-500 text-white">0</span>
+    </button>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MAIN CONTAINER -->
+  <!-- ===================================================================== -->
+  <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-5 flex-1 w-full">
+
+    <!-- ===================================================================== -->
+    <!-- TAB 1: DASHBOARD OVERVIEW -->
+    <!-- ===================================================================== -->
+    <section id="view-dashboard" class="space-y-6">
+      
+      <!-- Top KPI Cards -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+        <!-- Card 1: Total Ingested -->
+        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs kpi-card">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-slate-500">Total Ingested</span>
+            <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+              <i data-lucide="folder-archive" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div class="text-xl sm:text-2xl font-extrabold text-slate-900" id="stat-total-imgs">0</div>
+          <p class="text-[11px] text-slate-400 mt-1">Processed WebP documents</p>
+        </div>
+
+        <!-- Card 2: Approved Dataset -->
+        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs kpi-card">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-slate-500">Approved Dataset</span>
+            <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+              <i data-lucide="check-circle" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div class="text-xl sm:text-2xl font-extrabold text-emerald-600" id="stat-approved-imgs">0</div>
+          <p class="text-[11px] text-slate-400 mt-1">Ground truth verified</p>
+        </div>
+
+        <!-- Card 3: AI Pending Review -->
+        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs kpi-card">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-slate-500">AI Pending</span>
+            <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+              <i data-lucide="shield-alert" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div class="text-xl sm:text-2xl font-extrabold text-amber-600" id="stat-ai-pending">0</div>
+          <p class="text-[11px] text-slate-400 mt-1">Gated for human approval</p>
+        </div>
+
+        <!-- Card 4: 50,000 Target Progress -->
+        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs kpi-card">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-slate-500">Target 50,000</span>
+            <div class="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
+              <i data-lucide="target" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div class="text-xl sm:text-2xl font-extrabold text-rose-600" id="stat-progress-pct">0.00%</div>
+          <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden mt-2">
+            <div id="stat-progress-bar" class="bg-gradient-to-r from-rose-500 to-amber-500 h-full rounded-full transition-all duration-500" style="width: 1%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Action Buttons Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <button onclick="App.switchTab('crawler')" class="p-4 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl flex flex-col items-center justify-center gap-2 text-center group transition-all">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 group-hover:bg-blue-100 text-blue-600 flex items-center justify-center transition-colors">
+            <i data-lucide="globe" class="w-5 h-5"></i>
+          </div>
+          <span class="text-xs font-bold text-slate-800">.np Crawler</span>
+          <span class="text-[10px] text-slate-400">Harvest 2,000+ domains</span>
+        </button>
+
+        <button onclick="App.switchTab('annotate')" class="p-4 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl flex flex-col items-center justify-center gap-2 text-center group transition-all">
+          <div class="w-10 h-10 rounded-xl bg-rose-50 group-hover:bg-rose-100 text-rose-600 flex items-center justify-center transition-colors">
+            <i data-lucide="pen-tool" class="w-5 h-5"></i>
+          </div>
+          <span class="text-xs font-bold text-slate-800">Annotator</span>
+          <span class="text-[10px] text-slate-400">OCR & VLM Ground Truth</span>
+        </button>
+
+        <button onclick="App.switchTab('review')" class="p-4 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl flex flex-col items-center justify-center gap-2 text-center group transition-all relative">
+          <div class="w-10 h-10 rounded-xl bg-amber-50 group-hover:bg-amber-100 text-amber-600 flex items-center justify-center transition-colors">
+            <i data-lucide="shield-check" class="w-5 h-5"></i>
+          </div>
+          <span class="text-xs font-bold text-slate-800">AI Review Queue</span>
+          <span class="text-[10px] text-slate-400">Gate MCP drafts</span>
+          <span id="btn-review-badge" class="absolute top-3 right-3 px-1.5 py-0.5 text-[9px] font-bold rounded-full bg-amber-500 text-white">0</span>
+        </button>
+
+        <button onclick="App.exportDataset('jsonl')" class="p-4 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl flex flex-col items-center justify-center gap-2 text-center group transition-all">
+          <div class="w-10 h-10 rounded-xl bg-emerald-50 group-hover:bg-emerald-100 text-emerald-600 flex items-center justify-center transition-colors">
+            <i data-lucide="download" class="w-5 h-5"></i>
+          </div>
+          <span class="text-xs font-bold text-slate-800">Export Dataset</span>
+          <span class="text-[10px] text-slate-400">JSONL for VLM/CLIP</span>
+        </button>
+      </div>
+
+      <!-- Recent Documents Section (DashCode Style) -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <i data-lucide="clock" class="w-4 h-4 text-slate-500"></i>
+            <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Recently Ingested Documents</h3>
+          </div>
+          <button onclick="App.switchTab('gallery')" class="text-xs font-semibold text-rose-600 hover:text-rose-700 flex items-center gap-1">
+            View All in Gallery <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+
+        <div id="dash-recent-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+          <div class="col-span-full py-8 text-center text-slate-400 text-xs">
+            Loading recent documents...
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 2: .NP CRAWLER & DOMAIN HARVESTER -->
+    <!-- ===================================================================== -->
+    <section id="view-crawler" class="hidden space-y-6">
+      <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-xs space-y-6">
+        
+        <!-- Header & Action Buttons -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+          <div>
+            <h2 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+              <i data-lucide="globe" class="w-5 h-5 text-rose-600"></i>
+              Exhaustive .np Crawler & Domain Harvester
+            </h2>
+            <p class="text-xs text-slate-500 mt-0.5">Harvests all .gov.np, .edu.np, .org.np sites. Strict single-crawl idempotency prevents loops.</p>
+          </div>
+          
+          <div class="flex flex-wrap items-center gap-2">
+            <button id="btn-crawler-start" onclick="CrawlerComponent.start()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs rounded-xl shadow transition-all flex items-center gap-1.5">
+              <i data-lucide="play" class="w-3.5 h-3.5"></i> Start Crawler
+            </button>
+            <button id="btn-crawler-pause" onclick="CrawlerComponent.pause()" class="px-3.5 py-2 bg-amber-100 hover:bg-amber-200 text-amber-800 font-medium text-xs rounded-xl transition-all flex items-center gap-1.5">
+              <i data-lucide="pause" class="w-3.5 h-3.5"></i> Pause
+            </button>
+            <button id="btn-crawler-resume" onclick="CrawlerComponent.resume()" class="px-3.5 py-2 bg-blue-100 hover:bg-blue-200 text-blue-800 font-medium text-xs rounded-xl transition-all flex items-center gap-1.5">
+              <i data-lucide="play-circle" class="w-3.5 h-3.5"></i> Resume
+            </button>
+            <button id="btn-crawler-stop" onclick="CrawlerComponent.stop()" class="px-3.5 py-2 bg-rose-100 hover:bg-rose-200 text-rose-800 font-medium text-xs rounded-xl transition-all flex items-center gap-1.5">
+              <i data-lucide="square" class="w-3.5 h-3.5"></i> Stop
+            </button>
+          </div>
+        </div>
+
+        <!-- Concurrency & Rate Limiting Controls -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-slate-50 rounded-xl border border-slate-200">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1 flex justify-between">
+              <span>Concurrent Crawler Workers</span>
+              <span id="lbl-concurrency-val" class="text-rose-600 font-extrabold">15 Workers</span>
+            </label>
+            <input id="rng-concurrency" type="range" min="5" max="30" step="5" value="15" class="w-full accent-rose-600 cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-400 mt-1 font-medium">
+              <span>5 (Light)</span>
+              <span>10</span>
+              <span>15 (Balanced)</span>
+              <span>20</span>
+              <span>30 (Max)</span>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1 flex justify-between">
+              <span>Domain Politeness Rate</span>
+              <span id="lbl-rate-val" class="text-indigo-600 font-extrabold">800 ms</span>
+            </label>
+            <input id="rng-rate" type="range" min="200" max="2000" step="200" value="800" class="w-full accent-indigo-600 cursor-pointer">
+            <div class="flex justify-between text-[10px] text-slate-400 mt-1 font-medium">
+              <span>200ms (Fast)</span>
+              <span>800ms</span>
+              <span>1500ms</span>
+              <span>2000ms (Gentle)</span>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Crawl Depth Limit</label>
+            <select id="sel-max-depth" class="w-full text-xs bg-white border border-slate-300 rounded-lg p-2 font-medium focus:outline-none">
+              <option value="2">Depth 2 (Direct links & media)</option>
+              <option value="3">Depth 3 (Standard traversal)</option>
+              <option value="4" selected>Depth 4 (Deep exploration)</option>
+              <option value="5">Depth 5 (Exhaustive archive crawl)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Quick Domain Adder & Top Domain Seeder -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-slate-50 rounded-xl border border-slate-200">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Add Custom .np Domain / Portal</label>
+            <div class="flex gap-2">
+              <input id="inp-manual-domain" type="text" placeholder="e.g. moha.gov.np or portal.mof.gov.np" class="flex-1 text-xs bg-white border border-slate-300 rounded-lg p-2 focus:ring-1 focus:ring-rose-500 focus:outline-none">
+              <button onclick="CrawlerComponent.addDomainManual()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs rounded-lg transition-all flex items-center gap-1">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add
+              </button>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Seeded Top 2,043 .np Domains</label>
+            <div class="flex gap-2">
+              <button onclick="CrawlerComponent.seedAllTopDomains()" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs rounded-lg shadow transition-all flex items-center justify-center gap-1.5">
+                <i data-lucide="database" class="w-3.5 h-3.5"></i> Re-Seed All 2,043 Domains into Frontier
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Crawler Metrics -->
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-4 py-3 border-y border-slate-100 text-xs">
+          <div>
+            <span class="text-slate-500 block">State:</span>
+            <strong id="crawler-status-label" class="text-sm font-bold text-slate-800">Idle</strong>
+          </div>
+          <div>
+            <span class="text-slate-500 block">Active Coroutines:</span>
+            <strong id="crawler-active-workers-lbl" class="text-sm font-bold text-rose-600">0 Active</strong>
+          </div>
+          <div>
+            <span class="text-slate-500 block">Frontier Pending:</span>
+            <strong id="crawler-frontier-pending" class="text-sm font-bold text-blue-600">0 URLs</strong>
+          </div>
+          <div>
+            <span class="text-slate-500 block">Frontier Crawled:</span>
+            <strong id="crawler-frontier-done" class="text-sm font-bold text-emerald-600">0 URLs</strong>
+          </div>
+          <div>
+            <span class="text-slate-500 block">Harvested .np Domains:</span>
+            <strong id="crawler-domains-harvested" class="text-sm font-bold text-indigo-600">0 .np</strong>
+          </div>
+        </div>
+
+        <!-- Harvested Domains Table with Page-by-Page Controls -->
+        <div class="space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+              <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+                <i data-lucide="layers" class="w-4 h-4 text-slate-500"></i> Discovered .np Domain Registry
+              </h3>
+              <div class="flex gap-1.5 text-[10px]">
+                <span id="badge-dom-gov" class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold border border-emerald-200">Gov: --</span>
+                <span id="badge-dom-edu" class="px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-bold border border-blue-200">Edu: --</span>
+                <span id="badge-dom-org" class="px-2 py-0.5 rounded bg-purple-50 text-purple-700 font-bold border border-purple-200">Org: --</span>
+                <span id="badge-dom-total" class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-bold border border-slate-200">Total: --</span>
+              </div>
+            </div>
+
+            <!-- Table Filters -->
+            <div class="flex items-center gap-2">
+              <select id="sel-domain-tier-filter" onchange="CrawlerComponent.loadDomains(1)" class="text-xs bg-slate-50 border border-slate-200 rounded-lg p-1.5 font-medium focus:outline-none">
+                <option value="">All Tiers</option>
+                <option value="gov">.gov.np (Government)</option>
+                <option value="edu">.edu.np (Universities)</option>
+                <option value="org">.org.np (Public Orgs)</option>
+                <option value="com">.com.np (Portals)</option>
+                <option value="net">.net.np</option>
+              </select>
+
+              <select id="sel-domain-limit" onchange="CrawlerComponent.loadDomains(1)" class="text-xs bg-slate-50 border border-slate-200 rounded-lg p-1.5 font-medium focus:outline-none">
+                <option value="25" selected>25 per page</option>
+                <option value="50">50 per page</option>
+                <option value="100">100 per page</option>
+              </select>
+
+              <div class="relative w-40">
+                <input id="inp-domain-search" type="text" placeholder="Search domain..." onkeyup="if(event.key==='Enter') CrawlerComponent.loadDomains(1)" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg pl-7 pr-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-rose-500">
+                <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-2 top-2"></i>
+              </div>
+
+              <button onclick="CrawlerComponent.loadDomains(1)" class="p-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-slate-600" title="Refresh">
+                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="border border-slate-200 rounded-xl overflow-hidden table-responsive-container">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-100 text-slate-600 font-semibold uppercase text-[10px] tracking-wider">
+                <tr>
+                  <th class="p-2.5">Domain</th>
+                  <th class="p-2.5">Tier</th>
+                  <th class="p-2.5">Pages Crawled</th>
+                  <th class="p-2.5">Status</th>
+                  <th class="p-2.5">Discovered</th>
+                </tr>
+              </thead>
+              <tbody id="tbl-harvested-domains" class="divide-y divide-slate-100 bg-white">
+                <tr>
+                  <td colspan="5" class="p-4 text-center text-slate-400">Loading harvested domains...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Domain Table Pagination -->
+          <div class="flex items-center justify-between pt-2 text-xs">
+            <div id="dom-pagination-info" class="text-slate-500">Showing 0 of 0 domains</div>
+            <div id="dom-pagination-btns" class="flex items-center space-x-1"></div>
+          </div>
+        </div>
+
+        <!-- Curated Seeds Checklist -->
+        <div class="pt-4 border-t border-slate-100">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Target Seed Directory (Curated Core Portals)</h3>
+            <div class="flex gap-2 text-xs">
+              <button onclick="CrawlerComponent.selectAllSeeds(true)" class="text-rose-600 hover:underline font-semibold">Select All</button>
+              <span class="text-slate-300">•</span>
+              <button onclick="CrawlerComponent.selectAllSeeds(false)" class="text-slate-500 hover:underline">Clear All</button>
+            </div>
+          </div>
+          <div id="seed-categories-container" class="space-y-3 max-h-72 overflow-y-auto pr-2">
+            <div class="text-xs text-slate-400 py-4 text-center">Loading .np seed directory...</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 3: GALLERY & MULTI-CRITERIA BROWSER -->
+    <!-- ===================================================================== -->
+    <section id="view-gallery" class="hidden space-y-4">
+      
+      <!-- Approved Dataset Banner (Shows when Approved filter is active) -->
+      <div id="gal-approved-banner" class="hidden bg-gradient-to-r from-emerald-600 to-teal-600 text-white p-4 rounded-2xl shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-white">
+            <i data-lucide="badge-check" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h4 class="font-bold text-sm">Certified Approved Nepali Dataset</h4>
+            <p class="text-xs text-emerald-100">All displayed documents have been verified by human annotation or gated review.</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="App.exportDataset('jsonl')" class="px-3.5 py-1.5 bg-white hover:bg-slate-100 text-emerald-800 font-bold text-xs rounded-xl shadow-xs transition-all flex items-center gap-1.5">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i> Export JSONL
+          </button>
+          <button onclick="App.exportDataset('csv')" class="px-3.5 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-xs rounded-xl transition-all flex items-center gap-1.5">
+            <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i> CSV
+          </button>
+        </div>
+      </div>
+
+      <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+        
+        <!-- Status Filter Pills & Sorting Toolbar -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+          
+          <!-- Quick Status Filter Pills (DashCode style) -->
+          <div class="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0">
+            <button id="gal-pill-all" onclick="GalleryComponent.setStatusTab('')" class="gal-tab-pill px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap bg-rose-600 text-white transition-all">
+              All Documents
+            </button>
+            <button id="gal-pill-ready" onclick="GalleryComponent.setStatusTab('ready')" class="gal-tab-pill px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap bg-slate-100 text-slate-600 hover:text-slate-900 transition-all">
+              Ready for Annotation
+            </button>
+            <button id="gal-pill-ai_pending" onclick="GalleryComponent.setStatusTab('ai_pending')" class="gal-tab-pill px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap bg-slate-100 text-slate-600 hover:text-slate-900 transition-all">
+              AI Pending Review
+            </button>
+            <button id="gal-pill-approved" onclick="GalleryComponent.setStatusTab('approved')" class="gal-tab-pill px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap bg-slate-100 text-slate-600 hover:text-slate-900 transition-all">
+              Approved Dataset
+            </button>
+          </div>
+
+          <!-- Controls: Sort By & Category -->
+          <div class="flex flex-wrap items-center gap-2">
+            <!-- Sort By Selector -->
+            <div class="flex items-center gap-1">
+              <span class="text-xs text-slate-400 font-medium hidden sm:inline">Sort:</span>
+              <select id="gal-sort-by" onchange="GalleryComponent.loadPage(1)" class="text-xs bg-slate-50 border border-slate-200 rounded-lg p-2 font-medium focus:ring-1 focus:ring-rose-500 focus:outline-none">
+                <option value="newest" selected>Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="file_size">Largest File Size</option>
+                <option value="resolution">Highest Resolution</option>
+                <option value="random">Random Shuffle</option>
+              </select>
+            </div>
+
+            <!-- Document Category Filter -->
+            <select id="gal-filter-type" onchange="GalleryComponent.loadPage(1)" class="text-xs bg-slate-50 border border-slate-200 rounded-lg p-2 font-medium focus:ring-1 focus:ring-rose-500 focus:outline-none">
+              <option value="">All Categories</option>
+              <option value="citizenship">Citizenship (नागरिकता)</option>
+              <option value="lalpurja">Land Deed (लालपुर्जा)</option>
+              <option value="gazette">Gazette (राजपत्र)</option>
+              <option value="license">Driving License</option>
+              <option value="certificate">Certificate</option>
+              <option value="letter">Official Circular</option>
+              <option value="form">Government Form</option>
+              <option value="newspaper">Newspaper</option>
+              <option value="photo">Cultural Photo</option>
+            </select>
+
+            <!-- Limit -->
+            <select id="gal-filter-limit" onchange="GalleryComponent.loadPage(1)" class="text-xs bg-slate-50 border border-slate-200 rounded-lg p-2 font-medium focus:outline-none">
+              <option value="12">12 / page</option>
+              <option value="24" selected>24 / page</option>
+              <option value="48">48 / page</option>
+              <option value="96">96 / page</option>
+            </select>
+
+            <!-- Search -->
+            <div class="relative w-full sm:w-48">
+              <input id="gal-search-text" type="text" onkeyup="if(event.key==='Enter') GalleryComponent.loadPage(1)" placeholder="Search OCR or text..." class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg pl-8 pr-3 py-2 focus:ring-1 focus:ring-rose-500 focus:outline-none">
+              <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Document Grid -->
+        <div id="gallery-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3.5 min-h-[320px]">
+          <div class="col-span-full text-center py-12 text-slate-400 text-xs">Loading document gallery...</div>
+        </div>
+
+        <!-- Pagination Bar -->
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 border-t border-slate-100 text-xs">
+          <div class="text-slate-500" id="gal-pagination-info">Showing 0-0 of 0</div>
+          <div class="flex items-center space-x-1" id="gal-pagination-btns"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 4: MULTIMODAL ANNOTATOR WORKSPACE (5/7 ERGONOMIC SPLIT) -->
+    <!-- ===================================================================== -->
+    <section id="view-annotate" class="hidden space-y-4">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+
+        <!-- Left Column: Compact Image Viewer & AI Output Card (5 cols) -->
+        <div class="lg:col-span-5 space-y-4">
+          
+          <!-- Image Viewport Card -->
+          <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="px-2 py-0.5 text-xs font-bold rounded bg-slate-100 text-slate-700" id="anno-img-id">ID: --</span>
+                  <span class="px-2 py-0.5 text-xs font-semibold rounded bg-blue-100 text-blue-700" id="anno-img-dims">-- x --</span>
+                  <span class="px-2 py-0.5 text-xs font-semibold rounded bg-emerald-100 text-emerald-700" id="anno-img-fmt">WebP</span>
+                  <span class="px-2 py-0.5 text-xs font-semibold rounded bg-purple-100 text-purple-700" id="anno-img-status">Ready</span>
+                </div>
+                <div class="flex items-center gap-1">
+                  <button onclick="AnnotatorComponent.toggleZoomModal()" class="p-1.5 hover:bg-slate-100 rounded-lg text-slate-600 transition-colors" title="Full Screen Zoom (Alt+Z)">
+                    <i data-lucide="maximize-2" class="w-4 h-4"></i>
+                  </button>
+                  <button onclick="AnnotatorComponent.loadPrevious()" class="p-1.5 hover:bg-slate-100 rounded-lg text-slate-600 transition-colors" title="Previous Image (Alt+P)">
+                    <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                  </button>
+                  <button onclick="AnnotatorComponent.loadNext()" class="p-1.5 hover:bg-slate-100 rounded-lg text-slate-600 transition-colors" title="Next Image (Alt+N)">
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Compact Image Canvas (max-height ~380px) with Click-to-Zoom -->
+              <div class="w-full bg-slate-950 rounded-xl overflow-hidden flex items-center justify-center anno-canvas-compact border border-slate-800 relative group cursor-zoom-in" onclick="AnnotatorComponent.toggleZoomModal()">
+                <img id="anno-main-image" src="" alt="Nepali document to annotate" onerror="this.onerror=null; this.src='/static/placeholder.svg'" class="max-h-full max-w-full object-contain transition-all duration-150">
+                <div id="anno-img-empty" class="text-slate-500 text-xs text-center p-8">
+                  <i data-lucide="image" class="w-10 h-10 mx-auto mb-2 text-slate-600"></i>
+                  No documents found. Start the crawler or run an iCrawler keyword search.
+                </div>
+                <div class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                  Click to Zoom (Alt+Z)
+                </div>
+              </div>
+            </div>
+
+            <!-- Actions Bar: Skip / Delete -->
+            <div class="flex items-center justify-between pt-3 mt-3 border-t border-slate-100 text-xs">
+              <button onclick="AnnotatorComponent.skipCurrent()" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 font-semibold rounded-lg flex items-center gap-1.5 transition-all" title="Permanently delete non-annotated image from disk (Alt+D)">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Skip & Delete (Alt+D)
+              </button>
+              <div class="flex items-center gap-1.5">
+                <button onclick="AnnotatorComponent.askAi()" class="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold rounded-lg flex items-center gap-1.5 transition-all">
+                  <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Ask AI Assist
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dedicated AI Vision Output & Assistant Panel -->
+          <div class="bg-white p-4 sm:p-5 rounded-2xl border border-indigo-100 shadow-xs space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                  <i data-lucide="bot" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <h4 class="text-xs font-bold text-slate-900">AI Output & Recommendations</h4>
+                  <span id="anno-ai-status" class="text-[10px] text-slate-400 block">Click Ask AI Assist to generate suggestions</span>
+                </div>
+              </div>
+              <button onclick="AnnotatorComponent.askAi()" class="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-500 text-white text-[11px] font-semibold rounded-lg transition-all flex items-center gap-1">
+                <i data-lucide="wand-2" class="w-3 h-3"></i> Analyze
+              </button>
+            </div>
+
+            <!-- AI Output Raw Textarea -->
+            <div>
+              <textarea id="anno-ai-output" rows="3" class="w-full text-xs font-mono-code bg-slate-50 border border-slate-200 rounded-lg p-2.5 focus:ring-1 focus:ring-indigo-500 focus:outline-none" placeholder="AI-generated transcription, classification, and captions appear here..."></textarea>
+            </div>
+
+            <!-- 1-Click Transfer Buttons to Form Fields -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-[10px]">
+              <button onclick="AnnotatorComponent.applyAiToOcr()" class="py-1 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded flex items-center justify-center gap-1 transition-colors">
+                <i data-lucide="copy" class="w-3 h-3"></i> To OCR
+              </button>
+              <button onclick="AnnotatorComponent.applyAiToCaptionNe()" class="py-1 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded flex items-center justify-center gap-1 transition-colors">
+                <i data-lucide="copy" class="w-3 h-3"></i> To Nepali
+              </button>
+              <button onclick="AnnotatorComponent.applyAiToCaptionEn()" class="py-1 px-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded flex items-center justify-center gap-1 transition-colors">
+                <i data-lucide="copy" class="w-3 h-3"></i> To English
+              </button>
+              <button onclick="AnnotatorComponent.applyAllAi()" class="py-1 px-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold rounded flex items-center justify-center gap-1 transition-colors">
+                <i data-lucide="check-check" class="w-3 h-3"></i> Apply All
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Annotation Inputs & Classification (7 cols) -->
+        <div class="lg:col-span-7 bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div>
+                <h3 class="text-sm font-bold text-slate-900">Ground Truth Transcription</h3>
+                <p class="text-[11px] text-slate-400">Human annotations are automatically approved and bypass gating.</p>
+              </div>
+              <span class="text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full font-semibold">
+                Auto-Approved
+              </span>
+            </div>
+
+            <!-- Document Category with Custom Entry (<datalist>) -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1 flex justify-between">
+                <span>Document Category</span>
+                <span class="text-[10px] text-slate-400 font-normal">Select or type custom type</span>
+              </label>
+              <div class="relative">
+                <input id="anno-doc-type" list="doc-types-list" type="text" placeholder="e.g. citizenship, lalpurja, gazette, license, bill, ticket..." class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg p-2.5 font-medium focus:ring-2 focus:ring-rose-500 focus:outline-none">
+                <datalist id="doc-types-list">
+                  <option value="citizenship">Citizenship Certificate (नागरिकता)</option>
+                  <option value="lalpurja">Land Ownership Deed (लालपुर्जा / जग्गाधनी)</option>
+                  <option value="gazette">Nepal Gazette (नेपाल राजपत्र)</option>
+                  <option value="license">Driving License / Smart Card</option>
+                  <option value="passport">Passport / E-Passport</option>
+                  <option value="certificate">Academic / Official Certificate</option>
+                  <option value="letter">Official Ministry Circular / Letter</option>
+                  <option value="form">Government Application Form</option>
+                  <option value="newspaper">Newspaper Archive / Scanned Page</option>
+                  <option value="photo">Cultural / Heritage / Scene Photo</option>
+                  <option value="receipt">Official Bill / Revenue Receipt</option>
+                  <option value="identity_card">Office / Student ID Card</option>
+                  <option value="other">Other Administrative Document</option>
+                </datalist>
+              </div>
+            </div>
+
+            <!-- OCR Text (Devanagari Ground Truth) -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">
+                OCR Transcribed Text <span class="text-slate-400 font-normal">(Devanagari Ground Truth)</span>
+              </label>
+              <textarea id="anno-ocr-text" rows="4" class="w-full devanagari text-xs bg-slate-50 border border-slate-200 rounded-lg p-3 focus-expand focus:ring-2 focus:ring-rose-500 focus:outline-none leading-relaxed" placeholder="यहाँ आधिकारिक नेपाली पाठ प्रविष्ट गर्नुहोस्..."></textarea>
+            </div>
+
+            <!-- Nepali Caption (CLIP/VLM finetuning) -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">
+                Nepali Caption <span class="text-slate-400 font-normal">(For CLIP/VLM finetuning)</span>
+              </label>
+              <textarea id="anno-caption-ne" rows="2" class="w-full devanagari text-xs bg-slate-50 border border-slate-200 rounded-lg p-2.5 focus-expand focus:ring-2 focus:ring-rose-500 focus:outline-none" placeholder="तस्विर वा दस्तावेजको स्पष्ट विवरण लेख्नुहोस्..."></textarea>
+            </div>
+
+            <!-- English Caption -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">
+                English Caption <span class="text-slate-400 font-normal">(Cross-lingual alignment)</span>
+              </label>
+              <textarea id="anno-caption-en" rows="2" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg p-2.5 focus-expand focus:ring-2 focus:ring-rose-500 focus:outline-none" placeholder="Describe the document in English..."></textarea>
+            </div>
+
+            <!-- Tags -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Tags (comma separated)</label>
+              <input id="anno-tags" type="text" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg p-2.5 focus:ring-2 focus:ring-rose-500 focus:outline-none" placeholder="e.g. moha, nagarikta, official, 2080">
+            </div>
+          </div>
+
+          <!-- Save Button & Shortcut Legend -->
+          <div class="pt-4 border-t border-slate-100 mt-4 space-y-2">
+            <button onclick="AnnotatorComponent.saveHumanAnnotation()" class="w-full py-3 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs sm:text-sm rounded-xl shadow-md shadow-rose-200 transition-all flex items-center justify-center gap-2">
+              <i data-lucide="check" class="w-4 h-4"></i> Save & Approve Annotation (Alt+S)
+            </button>
+            <div class="flex items-center justify-center gap-3 text-[10px] text-slate-400 pt-1 font-mono-code">
+              <span><strong class="text-slate-600">Alt+S</strong>: Save</span>
+              <span>•</span>
+              <span><strong class="text-slate-600">Alt+N</strong>: Next</span>
+              <span>•</span>
+              <span><strong class="text-slate-600">Alt+P</strong>: Prev</span>
+              <span>•</span>
+              <span><strong class="text-slate-600">Alt+D</strong>: Discard</span>
+              <span>•</span>
+              <span><strong class="text-slate-600">Alt+Z</strong>: Zoom</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 5: AI APPROVAL QUEUE (GATED MCP REVIEW) -->
+    <!-- ===================================================================== -->
+    <section id="view-review" class="hidden space-y-6">
+      <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
+          <div>
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              <i data-lucide="shield-alert" class="w-5 h-5 text-amber-500"></i>
+              Intermediate Approval Queue for AI Annotations
+            </h2>
+            <p class="text-xs text-slate-500 mt-0.5">Annotations submitted by external AI / MCP agents are gated here. Approve or edit before inclusion in dataset.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="ReviewComponent.loadPending()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-lg flex items-center gap-1.5 transition-all">
+              <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Refresh
+            </button>
+            <button onclick="ReviewComponent.bulkApproveAll()" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-lg shadow transition-all flex items-center gap-1.5">
+              <i data-lucide="check-check" class="w-3.5 h-3.5"></i> Approve All Loaded
+            </button>
+          </div>
+        </div>
+
+        <div id="ai-review-cards-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+          <div class="col-span-2 text-center py-12 text-slate-400 text-xs">
+            <i data-lucide="inbox" class="w-8 h-8 mx-auto mb-2 text-slate-300"></i>
+            No AI annotations currently pending review.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 6: iCRAWLER & CONCEPT EXPANSION -->
+    <!-- ===================================================================== -->
+    <section id="view-search" class="hidden space-y-6">
+      <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-xs">
+        <div class="max-w-2xl">
+          <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+            <i data-lucide="search" class="w-5 h-5 text-indigo-600"></i>
+            Targeted Keyword Ingestion & Concept Search
+          </h2>
+          <p class="text-xs text-slate-500 mt-1">
+            When specific Nepali document categories are under-represented, search keywords to download additional images.
+            The system suggests Devanagari captions and optimal English queries for search engines.
+          </p>
+        </div>
+
+        <!-- Suggestion Input & Generator -->
+        <div class="mt-4 p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3 max-w-3xl">
+          <label class="block text-xs font-bold text-slate-700">Enter Nepali Concept / Document Topic</label>
+          <div class="flex gap-2">
+            <input id="concept-input" type="text" class="flex-1 devanagari text-xs bg-white border border-slate-300 rounded-lg p-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="e.g. नेपाल नागरिकता, जग्गाधनी प्रमाणपूर्जा, राजपत्र, लाइसेन्स">
+            <button onclick="SearchComponent.suggest()" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs rounded-lg shadow transition-all flex items-center gap-1.5 whitespace-nowrap">
+              <i data-lucide="lightbulb" class="w-3.5 h-3.5"></i> Suggest Queries & Captions
+            </button>
+          </div>
+
+          <!-- Suggestion Results Box -->
+          <div id="concept-suggestion-box" class="hidden mt-3 p-3.5 bg-white rounded-lg border border-indigo-100 text-xs space-y-2">
+            <div>
+              <span class="text-slate-400 font-semibold block">Suggested Nepali Caption:</span>
+              <p id="sug-caption-ne" class="devanagari font-medium text-slate-800 mt-0.5"></p>
+            </div>
+            <div>
+              <span class="text-slate-400 font-semibold block">Target English Search Queries (for Google/Bing):</span>
+              <div id="sug-query-pills" class="flex flex-wrap gap-1.5 mt-1"></div>
+            </div>
+            <div>
+              <span class="text-slate-400 font-semibold block">Suggested Document Type:</span>
+              <span id="sug-doc-type" class="px-2 py-0.5 bg-slate-100 font-semibold rounded text-slate-700 inline-block mt-0.5"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- iCrawler Execution Bar -->
+        <div class="mt-6 pt-4 border-t border-slate-100 max-w-3xl space-y-3">
+          <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Execute Image Ingestion</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-[11px] font-medium text-slate-600 mb-1">Search Query (Nepali/English)</label>
+              <input id="icrawler-query" type="text" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-rose-500" placeholder="Nepal citizenship certificate">
+            </div>
+            <div>
+              <label class="block text-[11px] font-medium text-slate-600 mb-1">Max Images to Fetch</label>
+              <input id="icrawler-max" type="number" min="5" max="50" value="15" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-rose-500">
+            </div>
+            <div class="flex items-end">
+              <button onclick="SearchComponent.run()" class="w-full py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-lg shadow transition-all flex items-center justify-center gap-1.5">
+                <i data-lucide="download-cloud" class="w-3.5 h-3.5"></i> Download & Ingest
+              </button>
+            </div>
+          </div>
+          <p id="icrawler-status-msg" class="text-xs text-slate-500 italic"></p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 1: LIGHTBOX ZOOM MODAL -->
+  <!-- ===================================================================== -->
+  <div id="image-modal" class="hidden fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4" onclick="AnnotatorComponent.closeZoomModal()">
+    <div class="relative max-w-5xl max-h-[90vh] flex flex-col items-center" onclick="event.stopPropagation()">
+      <button onclick="AnnotatorComponent.closeZoomModal()" class="absolute -top-10 right-0 text-white hover:text-rose-400 p-2">
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+      <img id="modal-img-el" src="" class="max-h-[85vh] max-w-full object-contain rounded-lg shadow-2xl">
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 2: ROUTER / PHONE QR CODE MODAL -->
+  <!-- ===================================================================== -->
+  <div id="qr-modal" class="hidden fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4" onclick="App.toggleQrModal()">
+    <div class="bg-white rounded-2xl p-6 max-w-sm w-full text-center space-y-4 shadow-2xl border border-slate-200" onclick="event.stopPropagation()">
+      <div class="w-12 h-12 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center mx-auto">
+        <i data-lucide="smartphone" class="w-6 h-6"></i>
+      </div>
+      <div>
+        <h3 class="text-base font-bold text-slate-900">Scan to Open on Phone</h3>
+        <p class="text-xs text-slate-500 mt-1">Connect your mobile phone to the same Wi-Fi router to annotate anywhere in the room.</p>
+      </div>
+
+      <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 inline-block">
+        <img id="qr-code-img" src="" alt="LAN QR Code" class="w-48 h-48 mx-auto object-contain rounded-lg shadow-xs">
+      </div>
+
+      <div class="space-y-2">
+        <button onclick="App.copyPhoneUrl()" class="w-full py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-xl shadow transition-all flex items-center justify-center gap-1.5">
+          <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Direct URL
+        </button>
+        <button onclick="App.toggleQrModal()" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-xl transition-all">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- NOTIFICATION TOAST -->
+  <!-- ===================================================================== -->
+  <div id="toast" class="fixed bottom-20 md:bottom-5 right-5 px-4 py-3 rounded-xl shadow-xl text-xs font-semibold flex items-center gap-2.5 border z-50 transform translate-y-24 opacity-0 transition-all duration-300">
+    <span id="toast-msg">Notification</span>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODULAR JAVASCRIPT BUNDLES -->
+  <!-- ===================================================================== -->
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/components/crawler.js"></script>
+  <script src="/static/js/components/gallery.js"></script>
+  <script src="/static/js/components/annotator.js"></script>
+  <script src="/static/js/components/review.js"></script>
+  <script src="/static/js/components/search.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

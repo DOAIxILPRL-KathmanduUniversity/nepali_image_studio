@@ -1,0 +1,9 @@
+<!-- Fullscreen Lightbox Zoom Modal -->
+<div id="image-modal" class="hidden fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4" onclick="AnnotatorComponent.closeZoomModal()">
+  <div class="relative max-w-5xl max-h-[90vh] flex flex-col items-center" onclick="event.stopPropagation()">
+    <button onclick="AnnotatorComponent.closeZoomModal()" class="absolute -top-10 right-0 text-white hover:text-rose-400 p-2 transition-colors">
+      <i data-lucide="x" class="w-6 h-6"></i>
+    </button>
+    <img id="modal-img-el" src="" class="max-h-[85vh] max-w-full object-contain rounded-lg shadow-2xl">
+  </div>
+</div>

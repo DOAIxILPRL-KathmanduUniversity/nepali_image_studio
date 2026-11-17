@@ -1,0 +1,102 @@
+<!-- DashCode Desktop Sidebar Navigation -->
+<aside id="desktop-sidebar" class="hidden md:flex flex-col w-64 bg-white border-r border-slate-200 fixed inset-y-0 left-0 z-40 select-none">
+  
+  <!-- Sidebar Brand Header -->
+  <div class="h-16 px-5 border-b border-slate-100 flex items-center gap-3 cursor-pointer" onclick="App.switchTab('dashboard')">
+    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-600 via-red-500 to-amber-500 flex items-center justify-center text-white font-extrabold shadow-md shadow-red-200 text-lg">
+      ने
+    </div>
+    <div>
+      <div class="flex items-center gap-1.5">
+        <span class="text-sm font-bold text-slate-900 tracking-tight">Open Nepali Image</span>
+      </div>
+      <span class="inline-block px-1.5 py-0.2 text-[9px] font-bold rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+        50k+ Target Platform
+      </span>
+    </div>
+  </div>
+
+  <!-- Operational Mode Mini Banner -->
+  <div class="px-4 py-2.5 bg-slate-50 border-b border-slate-100 flex items-center justify-between text-[11px]">
+    <div class="flex items-center gap-1.5">
+      <span id="sb-crawler-live-dot" class="w-2 h-2 rounded-full bg-slate-400"></span>
+      <span class="text-slate-500 font-medium">Crawler:</span>
+      <strong id="sb-crawler-status" class="text-slate-800 font-semibold">Idle</strong>
+    </div>
+    <span id="sb-crawler-mode-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+      Balanced
+    </span>
+  </div>
+
+  <!-- Vertical Nav Links -->
+  <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+    <button onclick="App.switchTab('dashboard')" id="tab-btn-dashboard" class="nav-tab w-full px-3.5 py-2.5 text-xs font-semibold rounded-xl flex items-center justify-between transition-all bg-rose-50 text-rose-700">
+      <div class="flex items-center gap-2.5">
+        <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+        <span>Dashboard</span>
+      </div>
+    </button>
+
+    <button onclick="App.switchTab('crawler')" id="tab-btn-crawler" class="nav-tab w-full px-3.5 py-2.5 text-xs font-semibold rounded-xl flex items-center justify-between transition-all text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+      <div class="flex items-center gap-2.5">
+        <i data-lucide="globe" class="w-4 h-4 text-rose-600"></i>
+        <span>.np Crawler</span>
+      </div>
+      <span id="sb-crawler-badge" class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600">0</span>
+    </button>
+
+    <button onclick="App.switchTab('gallery')" id="tab-btn-gallery" class="nav-tab w-full px-3.5 py-2.5 text-xs font-semibold rounded-xl flex items-center justify-between transition-all text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+      <div class="flex items-center gap-2.5">
+        <i data-lucide="grid" class="w-4 h-4 text-blue-600"></i>
+        <span>Gallery & Filter</span>
+      </div>
+    </button>
+
+    <button onclick="App.switchTab('annotate')" id="tab-btn-annotate" class="nav-tab w-full px-3.5 py-2.5 text-xs font-semibold rounded-xl flex items-center justify-between transition-all text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+      <div class="flex items-center gap-2.5">
+        <i data-lucide="pen-tool" class="w-4 h-4 text-emerald-600"></i>
+        <span>Annotator</span>
+      </div>
+      <span id="sb-annotate-pending-badge" class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Ready</span>
+    </button>
+
+    <button onclick="App.switchTab('review')" id="tab-btn-review" class="nav-tab w-full px-3.5 py-2.5 text-xs font-semibold rounded-xl flex items-center justify-between transition-all text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+      <div class="flex items-center gap-2.5">
+        <i data-lucide="shield-alert" class="w-4 h-4 text-amber-600"></i>
+        <span>AI Approval Queue</span>
+      </div>
+      <span id="sb-ai-pending-badge" class="hidden px-2 py-0.5 text-[10px] font-extrabold rounded-full bg-amber-500 text-white animate-pulse">0</span>
+    </button>
+
+    <button onclick="App.switchTab('concept_studio')" id="tab-btn-concept_studio" class="nav-tab w-full px-3.5 py-2.5 text-xs font-semibold rounded-xl flex items-center justify-between transition-all text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+      <div class="flex items-center gap-2.5">
+        <i data-lucide="sparkles" class="w-4 h-4 text-indigo-600"></i>
+        <span>AI Concept Studio</span>
+      </div>
+      <span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-indigo-50 text-indigo-700">iCrawler</span>
+    </button>
+  </nav>
+
+  <!-- Sidebar Footer Info -->
+  <div class="p-3 border-t border-slate-100 bg-slate-50/70 space-y-2 text-xs">
+    <!-- Storage Bar -->
+    <div class="p-2.5 bg-white rounded-xl border border-slate-200/80 shadow-2xs">
+      <div class="flex items-center justify-between text-[11px] text-slate-600 mb-1">
+        <span class="flex items-center gap-1 font-medium"><i data-lucide="hard-drive" class="w-3.5 h-3.5 text-slate-400"></i> Storage Free</span>
+        <strong id="sb-free-disk-val" class="font-bold text-slate-800">-- GB</strong>
+      </div>
+      <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+        <div id="sb-disk-bar" class="bg-emerald-500 h-1.5 rounded-full transition-all duration-300" style="width: 80%"></div>
+      </div>
+    </div>
+
+    <!-- Phone Router QR Trigger -->
+    <button onclick="App.toggleQrModal()" class="w-full py-2 px-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200/80 rounded-xl font-semibold text-[11px] flex items-center justify-between transition-all" title="Pair Phone via Wi-Fi Router">
+      <div class="flex items-center gap-1.5 truncate">
+        <i data-lucide="smartphone" class="w-3.5 h-3.5 text-rose-600 shrink-0"></i>
+        <span class="truncate font-mono-code" id="sb-phone-url">192.168.10.108:8000</span>
+      </div>
+      <i data-lucide="qr-code" class="w-3.5 h-3.5 text-rose-500 shrink-0"></i>
+    </button>
+  </div>
+</aside>

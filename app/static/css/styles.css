@@ -1,0 +1,165 @@
+/* Open Nepali Image - Modern Responsive Stylesheet (DashCode Inspired) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --primary-color: #e11d48;
+  --primary-hover: #be123c;
+  --primary-light: #ffe4e6;
+  --secondary-color: #4f46e5;
+  --bg-slate: #f8fafc;
+  --card-border: #e2e8f0;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-slate);
+  padding-bottom: 72px; /* Space for fixed mobile bottom nav on small screens */
+}
+
+@media (min-width: 768px) {
+  body {
+    padding-bottom: 0;
+  }
+}
+
+.devanagari {
+  font-family: 'Noto Sans Devanagari', 'Inter', sans-serif;
+}
+
+.font-mono-code {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Smooth Transitions & Card Shadows (DashCode style) */
+.nav-tab, .action-btn, .kpi-card, .doc-card {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.02);
+}
+
+.doc-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -3px rgba(0, 0, 0, 0.08);
+}
+
+/* Responsive Table Scroll */
+.table-responsive-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* DashCode Mobile Bottom Navigation Bar */
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid #e2e8f0;
+  z-index: 40;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 8px;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.mobile-nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 600;
+  color: #64748b;
+  min-width: 56px;
+  min-height: 48px;
+  border-radius: 10px;
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+.mobile-nav-btn.active {
+  color: #e11d48;
+}
+
+.mobile-nav-btn.active i {
+  color: #e11d48;
+}
+
+/* Touch Friendly Targets (>= 44px) */
+@media (max-width: 768px) {
+  button, input, select, textarea {
+    min-height: 44px;
+  }
+
+  /* Prevent iOS Safari Automatic Zoom on Input Focus */
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+}
+
+/* Auto-Expanding Focused Textareas */
+.focus-expand {
+  transition: min-height 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.focus-expand:focus {
+  min-height: 180px;
+  box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.15);
+}
+
+/* Compact Document Canvas */
+.anno-canvas-compact {
+  max-height: 380px;
+  min-height: 240px;
+}
+
+@media (min-width: 1024px) {
+  .anno-canvas-compact {
+    max-height: 420px;
+  }
+}
+
+/* Lightbox Animation */
+#image-modal {
+  backdrop-filter: blur(8px);
+}
+
+#modal-img-el {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+}
+
+/* Pulsing Indicators */
+@keyframes soft-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.95); }
+}
+
+.live-indicator {
+  animation: soft-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

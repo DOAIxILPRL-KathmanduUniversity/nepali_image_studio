@@ -1,0 +1,25 @@
+<!-- Router / Phone LAN Access QR Code Modal -->
+<div id="qr-modal" class="hidden fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4" onclick="App.toggleQrModal()">
+  <div class="bg-white rounded-2xl p-6 max-w-sm w-full text-center space-y-4 shadow-2xl border border-slate-200" onclick="event.stopPropagation()">
+    <div class="w-12 h-12 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center mx-auto">
+      <i data-lucide="smartphone" class="w-6 h-6"></i>
+    </div>
+    <div>
+      <h3 class="text-base font-bold text-slate-900">Scan to Open on Phone</h3>
+      <p class="text-xs text-slate-500 mt-1">Connect your mobile phone to the same Wi-Fi router to annotate anywhere in the room.</p>
+    </div>
+
+    <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 inline-block">
+      <img id="qr-code-img" src="" alt="LAN QR Code" class="w-48 h-48 mx-auto object-contain rounded-lg shadow-xs">
+    </div>
+
+    <div class="space-y-2">
+      <button onclick="App.copyPhoneUrl()" class="w-full py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-xl shadow transition-all flex items-center justify-center gap-1.5">
+        <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Direct URL
+      </button>
+      <button onclick="App.toggleQrModal()" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-xl transition-all">
+        Close
+      </button>
+    </div>
+  </div>
+</div>

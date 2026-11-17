@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "open-nepali-image": {
+      "command": "/Users/paramanada/Desktop/open_nepali_image/.venv/bin/python",
+      "args": ["-m", "app.mcp.server"],
+      "cwd": "/Users/paramanada/Desktop/open_nepali_image",
+      "env": {
+        "ONI_DATABASE_URL": "postgresql+asyncpg://paramanada@localhost/open_nepali_image",
+        "ONI_DATABASE_URL_SYNC": "postgresql://paramanada@localhost/open_nepali_image",
+        "PYTHONPATH": "/Users/paramanada/Desktop/open_nepali_image"
+      }
+    }
+  }
+}

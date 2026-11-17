@@ -1,0 +1,120 @@
+<!-- TAB 1: DASHBOARD OVERVIEW (DashCode Inspired) -->
+<section id="view-dashboard" class="space-y-6">
+  
+  <!-- Top KPI Cards -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+    <!-- Card 1: Total Ingested -->
+    <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs kpi-card">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-slate-500">Total Ingested</span>
+        <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+          <i data-lucide="folder-archive" class="w-4 h-4"></i>
+        </div>
+      </div>
+      <div class="text-xl sm:text-2xl font-extrabold text-slate-900" id="stat-total-imgs">0</div>
+      <p class="text-[11px] text-slate-400 mt-1">Processed WebP documents</p>
+    </div>
+
+    <!-- Card 2: Approved Dataset -->
+    <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs kpi-card">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-slate-500">Approved Dataset</span>
+        <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+          <i data-lucide="check-circle" class="w-4 h-4"></i>
+        </div>
+      </div>
+      <div class="text-xl sm:text-2xl font-extrabold text-emerald-600" id="stat-approved-imgs">0</div>
+      <p class="text-[11px] text-slate-400 mt-1">Ground truth verified</p>
+    </div>
+
+    <!-- Card 3: AI Pending Review -->
+    <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs kpi-card">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-slate-500">AI Pending</span>
+        <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+          <i data-lucide="shield-alert" class="w-4 h-4"></i>
+        </div>
+      </div>
+      <div class="text-xl sm:text-2xl font-extrabold text-amber-600" id="stat-ai-pending">0</div>
+      <p class="text-[11px] text-slate-400 mt-1">Gated for human approval</p>
+    </div>
+
+    <!-- Card 4: 50,000 Target Progress -->
+    <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs kpi-card">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-slate-500">Target 50,000</span>
+        <div class="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center">
+          <i data-lucide="target" class="w-4 h-4"></i>
+        </div>
+      </div>
+      <div class="text-xl sm:text-2xl font-extrabold text-rose-600" id="stat-progress-pct">0.00%</div>
+      <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden mt-2">
+        <div id="stat-progress-bar" class="bg-gradient-to-r from-rose-500 to-amber-500 h-full rounded-full transition-all duration-500" style="width: 1%"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Action Buttons Grid -->
+  <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+    <button onclick="App.switchTab('crawler')" class="p-3.5 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl flex flex-col items-center justify-center gap-1.5 text-center group transition-all">
+      <div class="w-9 h-9 rounded-xl bg-blue-50 group-hover:bg-blue-100 text-blue-600 flex items-center justify-center transition-colors">
+        <i data-lucide="globe" class="w-4.5 h-4.5"></i>
+      </div>
+      <span class="text-xs font-bold text-slate-800">.np Crawler</span>
+      <span class="text-[10px] text-slate-400">Harvest 2,000+ domains</span>
+    </button>
+
+    <button onclick="App.switchTab('annotate')" class="p-3.5 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl flex flex-col items-center justify-center gap-1.5 text-center group transition-all">
+      <div class="w-9 h-9 rounded-xl bg-rose-50 group-hover:bg-rose-100 text-rose-600 flex items-center justify-center transition-colors">
+        <i data-lucide="pen-tool" class="w-4.5 h-4.5"></i>
+      </div>
+      <span class="text-xs font-bold text-slate-800">Annotator</span>
+      <span class="text-[10px] text-slate-400">OCR & VLM Workspace</span>
+    </button>
+
+    <button onclick="App.switchTab('concept_studio')" class="p-3.5 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl flex flex-col items-center justify-center gap-1.5 text-center group transition-all">
+      <div class="w-9 h-9 rounded-xl bg-indigo-50 group-hover:bg-indigo-100 text-indigo-600 flex items-center justify-center transition-colors">
+        <i data-lucide="sparkles" class="w-4.5 h-4.5"></i>
+      </div>
+      <span class="text-xs font-bold text-slate-800">AI Concept Studio</span>
+      <span class="text-[10px] text-slate-400">Auto Captions & Query Library</span>
+    </button>
+
+    <button onclick="App.switchTab('review')" class="p-3.5 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl flex flex-col items-center justify-center gap-1.5 text-center group transition-all relative">
+      <div class="w-9 h-9 rounded-xl bg-amber-50 group-hover:bg-amber-100 text-amber-600 flex items-center justify-center transition-colors">
+        <i data-lucide="shield-check" class="w-4.5 h-4.5"></i>
+      </div>
+      <span class="text-xs font-bold text-slate-800">AI Review Queue</span>
+      <span class="text-[10px] text-slate-400">Gate MCP drafts</span>
+      <span id="btn-review-badge" class="absolute top-2.5 right-2.5 px-1.5 py-0.5 text-[9px] font-bold rounded-full bg-amber-500 text-white">0</span>
+    </button>
+
+    <button onclick="App.exportDataset('jsonl')" class="p-3.5 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl flex flex-col items-center justify-center gap-1.5 text-center group transition-all">
+      <div class="w-9 h-9 rounded-xl bg-emerald-50 group-hover:bg-emerald-100 text-emerald-600 flex items-center justify-center transition-colors">
+        <i data-lucide="download" class="w-4.5 h-4.5"></i>
+      </div>
+      <span class="text-xs font-bold text-slate-800">Export Dataset</span>
+      <span class="text-[10px] text-slate-400">JSONL for VLM/CLIP</span>
+    </button>
+  </div>
+
+  <!-- Recent Documents Section (DashCode Style) -->
+  <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <i data-lucide="clock" class="w-4 h-4 text-slate-500"></i>
+        <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Recently Ingested Documents</h3>
+      </div>
+      <button onclick="App.switchTab('gallery')" class="text-xs font-semibold text-rose-600 hover:text-rose-700 flex items-center gap-1">
+        View All in Gallery <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+      </button>
+    </div>
+
+    <div id="dash-recent-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+      <div class="col-span-full py-8 text-center text-slate-400 text-xs">
+        Loading recent documents...
+      </div>
+    </div>
+  </div>
+
+</section>

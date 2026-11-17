@@ -1,0 +1,162 @@
+<!-- TAB 6: AI CONCEPT STUDIO & INGESTION LIBRARY -->
+<section id="view-concept_studio" class="hidden space-y-6">
+  
+  <!-- Studio Intro Header -->
+  <div class="bg-gradient-to-r from-indigo-900 via-slate-900 to-indigo-950 text-white p-5 sm:p-6 rounded-2xl shadow-sm space-y-2">
+    <div class="flex items-center gap-2.5">
+      <div class="w-9 h-9 rounded-xl bg-indigo-500/20 text-indigo-400 border border-indigo-400/30 flex items-center justify-center">
+        <i data-lucide="sparkles" class="w-5 h-5"></i>
+      </div>
+      <div>
+        <h2 class="text-base sm:text-lg font-bold">Autonomous AI Concept Studio & Query Library</h2>
+        <p class="text-xs text-indigo-200">
+          AI suggests high-accuracy Devanagari captions and high-converting English search keywords for underrepresented Nepali documents. Save concepts to your library and trigger 1-click targeted ingestion.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- Left Column: AI Concept Generator & Preview (5 cols) -->
+    <div class="lg:col-span-5 space-y-4">
+      
+      <!-- Input Card -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-3.5">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="bot" class="w-4 h-4 text-indigo-600"></i> AI Concept Generator
+          </h3>
+          <span class="text-[10px] text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded font-semibold">AI Synthesizer</span>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Enter Seed Topic / Document Type</label>
+          <input id="studio-seed-topic" type="text" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg p-2.5 devanagari focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="e.g. नेपाल नागरिकता, लालपुर्जा, सवारी चालक लाइसेन्स, कर रसिद...">
+          
+          <!-- 1-Click Inspiration Starters -->
+          <div class="flex flex-wrap items-center gap-1.5 pt-2 text-[10px]">
+            <span class="text-slate-400 font-medium">Quick Ideas:</span>
+            <button onclick="ConceptStudioComponent.useChip('राष्ट्रिय परिचयपत्र')" class="px-2 py-0.5 rounded bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-medium transition-colors">
+              + राष्ट्रिय परिचयपत्र
+            </button>
+            <button onclick="ConceptStudioComponent.useChip('नागरिकता प्रमाणपत्र')" class="px-2 py-0.5 rounded bg-rose-50 hover:bg-rose-100 text-rose-700 font-medium transition-colors">
+              + नागरिकता
+            </button>
+            <button onclick="ConceptStudioComponent.useChip('जग्गाधनी प्रमाणपूर्जा')" class="px-2 py-0.5 rounded bg-amber-50 hover:bg-amber-100 text-amber-800 font-medium transition-colors">
+              + लालपुर्जा
+            </button>
+            <button onclick="ConceptStudioComponent.useChip('सवारी चालक अनुमतिपत्र')" class="px-2 py-0.5 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-medium transition-colors">
+              + लाइसेन्स
+            </button>
+            <button onclick="ConceptStudioComponent.useChip('नेपाल राजपत्र')" class="px-2 py-0.5 rounded bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium transition-colors">
+              + राजपत्र
+            </button>
+          </div>
+        </div>
+
+        <div class="flex gap-2">
+          <button onclick="ConceptStudioComponent.generateFromInput()" class="flex-1 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl shadow transition-all flex items-center justify-center gap-1.5">
+            <i data-lucide="wand-2" class="w-3.5 h-3.5"></i> Propose Concept
+          </button>
+          <button onclick="ConceptStudioComponent.generateBatch()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-xl transition-all flex items-center gap-1" title="Generate 5 diverse Nepali concepts">
+            <i data-lucide="shuffle" class="w-3.5 h-3.5"></i> Batch 5
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Generated Concept Preview Card -->
+      <div id="studio-preview-card" class="hidden bg-white p-5 rounded-2xl border border-indigo-200 shadow-sm space-y-3">
+        <div class="flex items-center justify-between border-b border-indigo-50 pb-2">
+          <div class="flex items-center gap-1.5">
+            <span id="prev-doc-type" class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 font-bold text-[10px] uppercase">Category</span>
+            <span id="prev-topic" class="text-xs font-bold text-slate-900">Topic Title</span>
+          </div>
+          <span class="text-[10px] text-slate-400">Ready to Save</span>
+        </div>
+
+        <div>
+          <span class="text-[10px] font-bold text-slate-500 block uppercase">Devanagari Caption (Ground Truth):</span>
+          <p id="prev-caption-ne" class="devanagari text-xs text-slate-800 mt-0.5 leading-relaxed bg-slate-50 p-2 rounded border border-slate-100"></p>
+        </div>
+
+        <div>
+          <span class="text-[10px] font-bold text-slate-500 block uppercase">Target English Search Keyword:</span>
+          <p id="prev-query-en" class="font-mono-code text-xs text-indigo-700 font-semibold mt-0.5 bg-indigo-50/50 p-2 rounded border border-indigo-100"></p>
+        </div>
+
+        <div>
+          <span class="text-[10px] font-bold text-slate-500 block uppercase mb-1">Alternative Queries:</span>
+          <div id="prev-alt-queries" class="flex flex-wrap gap-1"></div>
+        </div>
+
+        <div class="pt-2 border-t border-slate-100">
+          <button onclick="ConceptStudioComponent.saveCurrentPreview()" class="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow transition-all flex items-center justify-center gap-1.5">
+            <i data-lucide="bookmark-plus" class="w-3.5 h-3.5"></i> Save to Concept Library
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Column: Saved Concept Library Table & Execution (7 cols) -->
+    <div class="lg:col-span-7 bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+      
+      <!-- Toolbar -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+        <div>
+          <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="library" class="w-4 h-4 text-slate-500"></i> Saved Concept Library
+          </h3>
+          <p class="text-[11px] text-slate-400 mt-0.5">Click "Run Ingestion" to acquire images for any saved concept.</p>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <select id="studio-filter-status" onchange="ConceptStudioComponent.loadSaved()" class="text-xs bg-slate-50 border border-slate-200 rounded-lg p-1.5 font-medium focus:outline-none">
+            <option value="">All Concepts</option>
+            <option value="pending">Pending Ingestion</option>
+            <option value="downloaded">Ingested</option>
+          </select>
+          <div class="relative w-40">
+            <input id="studio-search-text" type="text" onkeyup="if(event.key==='Enter') ConceptStudioComponent.loadSaved()" placeholder="Search library..." class="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg pl-7 pr-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+            <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-2 top-2"></i>
+          </div>
+          <button onclick="ConceptStudioComponent.loadSaved()" class="p-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-slate-600" title="Refresh">
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Saved Concepts Table -->
+      <div class="border border-slate-200 rounded-xl overflow-hidden table-responsive-container">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-slate-100 text-slate-600 font-semibold uppercase text-[10px] tracking-wider">
+            <tr>
+              <th class="p-2.5">Topic & Caption</th>
+              <th class="p-2.5">Category</th>
+              <th class="p-2.5">English Search Query</th>
+              <th class="p-2.5 text-center">Images</th>
+              <th class="p-2.5 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tbl-saved-concepts" class="divide-y divide-slate-100 bg-white">
+            <tr>
+              <td colspan="5" class="p-6 text-center text-slate-400">Loading saved concepts...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Execution Status Bar -->
+      <div id="studio-run-status" class="hidden p-3 bg-indigo-50 border border-indigo-100 rounded-xl text-xs text-indigo-900 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 animate-ping"></span>
+          <span id="studio-run-msg" class="font-medium">Ingesting keyword images...</span>
+        </div>
+        <span class="text-[11px] text-indigo-600 font-bold">Please wait</span>
+      </div>
+
+    </div>
+
+  </div>
+</section>

@@ -1,0 +1,129 @@
+{
+  "categories": [
+    {
+      "name": "Central Executive & Constitutional Bodies",
+      "tier": "gov",
+      "seeds": [
+        {"url": "https://nepal.gov.np", "name": "Nepal Government Official Portal", "priority": 1},
+        {"url": "https://opmcm.gov.np", "name": "Office of the Prime Minister and Council of Ministers", "priority": 1},
+        {"url": "https://presidentofnepal.gov.np", "name": "Office of the President", "priority": 2},
+        {"url": "https://npc.gov.np", "name": "National Planning Commission", "priority": 1},
+        {"url": "https://election.gov.np", "name": "Election Commission Nepal", "priority": 1},
+        {"url": "https://ciaa.gov.np", "name": "Commission for Investigation of Abuse of Authority", "priority": 1},
+        {"url": "https://oag.gov.np", "name": "Office of the Auditor General", "priority": 1},
+        {"url": "https://psc.gov.np", "name": "Public Service Commission", "priority": 1},
+        {"url": "https://supremecourt.gov.np", "name": "Supreme Court of Nepal", "priority": 1},
+        {"url": "https://lawcommission.gov.np", "name": "Nepal Law Commission", "priority": 1}
+      ]
+    },
+    {
+      "name": "Federal Ministries",
+      "tier": "gov",
+      "seeds": [
+        {"url": "https://moha.gov.np", "name": "Ministry of Home Affairs", "priority": 1},
+        {"url": "https://mof.gov.np", "name": "Ministry of Finance", "priority": 1},
+        {"url": "https://mofa.gov.np", "name": "Ministry of Foreign Affairs", "priority": 2},
+        {"url": "https://moest.gov.np", "name": "Ministry of Education, Science and Technology", "priority": 1},
+        {"url": "https://mohp.gov.np", "name": "Ministry of Health and Population", "priority": 1},
+        {"url": "https://molcpa.gov.np", "name": "Ministry of Land Management, Cooperatives & Poverty Alleviation", "priority": 1},
+        {"url": "https://moljpa.gov.np", "name": "Ministry of Law, Justice and Parliamentary Affairs", "priority": 1},
+        {"url": "https://moald.gov.np", "name": "Ministry of Agriculture and Livestock Development", "priority": 1},
+        {"url": "https://mofaga.gov.np", "name": "Ministry of Federal Affairs and General Administration", "priority": 1},
+        {"url": "https://mopit.gov.np", "name": "Ministry of Physical Infrastructure and Transport", "priority": 1},
+        {"url": "https://moud.gov.np", "name": "Ministry of Urban Development", "priority": 2},
+        {"url": "https://mofe.gov.np", "name": "Ministry of Forests and Environment", "priority": 2},
+        {"url": "https://moics.gov.np", "name": "Ministry of Industry, Commerce and Supplies", "priority": 2},
+        {"url": "https://moless.gov.np", "name": "Ministry of Labour, Employment and Social Security", "priority": 2},
+        {"url": "https://moewri.gov.np", "name": "Ministry of Energy, Water Resources and Irrigation", "priority": 2},
+        {"url": "https://mowcsc.gov.np", "name": "Ministry of Women, Children and Senior Citizens", "priority": 2},
+        {"url": "https://tourism.gov.np", "name": "Ministry of Culture, Tourism and Civil Aviation", "priority": 2},
+        {"url": "https://mows.gov.np", "name": "Ministry of Water Supply", "priority": 2},
+        {"url": "https://moys.gov.np", "name": "Ministry of Youth and Sports", "priority": 3},
+        {"url": "https://mod.gov.np", "name": "Ministry of Defence", "priority": 3}
+      ]
+    },
+    {
+      "name": "Key Government Departments & Archives",
+      "tier": "gov",
+      "seeds": [
+        {"url": "https://dop.gov.np", "name": "Department of Printing (Nepal Gazette/Rajpatra)", "priority": 1},
+        {"url": "http://rajpatra.dop.gov.np", "name": "Nepal Gazette Digital Archives", "priority": 1},
+        {"url": "https://dos.gov.np", "name": "Department of Survey (नापी विभाग)", "priority": 1},
+        {"url": "https://dolma.gov.np", "name": "Department of Land Management and Archive (DOLMA)", "priority": 1},
+        {"url": "https://doslr.gov.np", "name": "Department of Land Revenue (मालपोत)", "priority": 1},
+        {"url": "https://donidcr.gov.np", "name": "Department of National ID and Civil Registration", "priority": 1},
+        {"url": "https://nsonepal.gov.np", "name": "National Statistics Office (formerly CBS)", "priority": 1},
+        {"url": "http://nationaldata.gov.np", "name": "National Data Portal Nepal", "priority": 1},
+        {"url": "http://narchives.gov.np", "name": "National Archives of Nepal (राष्ट्रिय अभिलेखालय)", "priority": 1},
+        {"url": "http://doa.gov.np", "name": "Department of Archaeology", "priority": 1},
+        {"url": "https://customs.gov.np", "name": "Department of Customs", "priority": 2},
+        {"url": "https://ird.gov.np", "name": "Inland Revenue Department", "priority": 2},
+        {"url": "https://fcgo.gov.np", "name": "Financial Comptroller General Office", "priority": 2},
+        {"url": "https://nepalpassport.gov.np", "name": "Department of Passports", "priority": 2},
+        {"url": "https://immigration.gov.np", "name": "Department of Immigration", "priority": 2},
+        {"url": "https://dotm.gov.np", "name": "Department of Transport Management", "priority": 2},
+        {"url": "https://dor.gov.np", "name": "Department of Roads", "priority": 2},
+        {"url": "https://moecdc.gov.np", "name": "Curriculum Development Centre (Textbooks & Curricula)", "priority": 1},
+        {"url": "https://nepalpolice.gov.np", "name": "Nepal Police", "priority": 2},
+        {"url": "https://apf.gov.np", "name": "Armed Police Force", "priority": 2},
+        {"url": "https://nta.gov.np", "name": "Nepal Telecommunications Authority", "priority": 2},
+        {"url": "https://ppmo.gov.np", "name": "Public Procurement Monitoring Office", "priority": 2}
+      ]
+    },
+    {
+      "name": "Provincial Governments",
+      "tier": "gov",
+      "seeds": [
+        {"url": "https://koshi.gov.np", "name": "Koshi Province Government", "priority": 2},
+        {"url": "https://ocmcm.p2.gov.np", "name": "Madhesh Province Government", "priority": 2},
+        {"url": "https://bagamati.gov.np", "name": "Bagmati Province Government", "priority": 2},
+        {"url": "https://gandaki.gov.np", "name": "Gandaki Province Government", "priority": 2},
+        {"url": "https://lumbini.gov.np", "name": "Lumbini Province Government", "priority": 2},
+        {"url": "https://karnali.gov.np", "name": "Karnali Province Government", "priority": 2},
+        {"url": "https://sudurpashchim.gov.np", "name": "Sudurpashchim Province Government", "priority": 2}
+      ]
+    },
+    {
+      "name": "Major Municipalities",
+      "tier": "gov",
+      "seeds": [
+        {"url": "https://kathmandu.gov.np", "name": "Kathmandu Metropolitan City", "priority": 2},
+        {"url": "https://lmc.gov.np", "name": "Lalitpur Metropolitan City", "priority": 2},
+        {"url": "https://pokharamun.gov.np", "name": "Pokhara Metropolitan City", "priority": 2},
+        {"url": "https://bharatpurmun.gov.np", "name": "Bharatpur Metropolitan City", "priority": 2},
+        {"url": "https://biratnagarmun.gov.np", "name": "Biratnagar Metropolitan City", "priority": 3},
+        {"url": "https://birgunjmun.gov.np", "name": "Birgunj Metropolitan City", "priority": 3}
+      ]
+    },
+    {
+      "name": "Education & Digital Repositories (.edu.np)",
+      "tier": "edu",
+      "seeds": [
+        {"url": "https://tu.edu.np", "name": "Tribhuvan University (Central)", "priority": 1},
+        {"url": "https://elibrary.tucl.edu.np", "name": "TU Central Library Digital Repository (DSpace)", "priority": 1},
+        {"url": "https://ku.edu.np", "name": "Kathmandu University", "priority": 1},
+        {"url": "https://repository.ku.edu.np", "name": "KU Digital Repository", "priority": 1},
+        {"url": "https://pu.edu.np", "name": "Pokhara University", "priority": 2},
+        {"url": "http://purbuniv.edu.np", "name": "Purbanchal University", "priority": 2},
+        {"url": "http://nsu.edu.np", "name": "Nepal Sanskrit University", "priority": 1},
+        {"url": "http://afu.edu.np", "name": "Agriculture and Forestry University", "priority": 2},
+        {"url": "http://lbu.edu.np", "name": "Lumbini Buddhist University", "priority": 2},
+        {"url": "http://mwu.edu.np", "name": "Mid-Western University", "priority": 2},
+        {"url": "http://fwu.edu.np", "name": "Far-Western University", "priority": 2},
+        {"url": "https://nou.edu.np", "name": "Nepal Open University", "priority": 2},
+        {"url": "https://neb.gov.np", "name": "National Examinations Board", "priority": 2},
+        {"url": "https://nnl.gov.np", "name": "Nepal National Library", "priority": 1}
+      ]
+    },
+    {
+      "name": "Organizations, Banks & Research (.org.np / .np)",
+      "tier": "org",
+      "seeds": [
+        {"url": "https://nrb.org.np", "name": "Nepal Rastra Bank (Central Bank)", "priority": 1},
+        {"url": "https://ctevt.org.np", "name": "CTEVT Nepal", "priority": 2},
+        {"url": "https://icomosnepal.org.np", "name": "ICOMOS Nepal (Cultural Heritage)", "priority": 2},
+        {"url": "http://martinchautari.org.np", "name": "Martin Chautari Research Archive", "priority": 1}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+[
+  {
+    "id": 33,
+    "filename": "sample_unannotated_33.webp",
+    "width": 1914,
+    "height": 388,
+    "format": "webp",
+    "tier": "gov_np"
+  },
+  {
+    "id": 34,
+    "filename": "sample_unannotated_34.webp",
+    "width": 1200,
+    "height": 800,
+    "format": "webp",
+    "tier": "gov_np"
+  },
+  {
+    "id": 35,
+    "filename": "sample_unannotated_35.webp",
+    "width": 1200,
+    "height": 628,
+    "format": "webp",
+    "tier": "gov_np"
+  },
+  {
+    "id": 36,
+    "filename": "sample_unannotated_36.webp",
+    "width": 1200,
+    "height": 675,
+    "format": "webp",
+    "tier": "gov_np"
+  },
+  {
+    "id": 37,
+    "filename": "sample_unannotated_37.webp",
+    "width": 2480,
+    "height": 1098,
+    "format": "webp",
+    "tier": "gov_np"
+  },
+  {
+    "id": 38,
+    "filename": "sample_unannotated_38.webp",
+    "width": 472,
+    "height": 472,
+    "format": "webp",
+    "tier": "gov_np"
+  },
+  {
+    "id": 39,
+    "filename": "sample_unannotated_39.webp",
+    "width": 2480,
+    "height": 1178,
+    "format": "webp",
+    "tier": "gov_np"
+  },
+  {
+    "id": 40,
+    "filename": "sample_unannotated_40.webp",
+    "width": 2480,
+    "height": 1256,
+    "format": "webp",
+    "tier": "gov_np"
+  },
+  {
+    "id": 41,
+    "filename": "sample_unannotated_41.webp",
+    "width": 648,
+    "height": 795,
+    "format": "webp",
+    "tier": "gov_np"
+  },
+  {
+    "id": 42,
+    "filename": "sample_unannotated_42.webp",
+    "width": 472,
+    "height": 472,
+    "format": "webp",
+    "tier": "gov_np"
+  }
+]
